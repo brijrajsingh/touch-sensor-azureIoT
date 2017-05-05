@@ -1,5 +1,7 @@
 ### Overview
-This repository contains a solution to take readings from a touch sensor and send them to cloud (Microsoft Azure) for real-time analytics, using Node.JS on a Raspberry Pi running Raspbian OS.
+This repository contains a solution to take readings from a touch sensor and send them to cloud (Microsoft Azure) for real-time analytics, using Node.JS/Python on a Raspberry Pi running Raspbian OS.
+
+## Workshop #1
 
 ### Steps
 To get this to work, follow the steps below:
@@ -10,10 +12,9 @@ To get this to work, follow the steps below:
     -   VCC of touch sensor to 5V PWR (Pin 2) of Raspberry Pi
     -   SIG of touch sensor to GPIO 2 (Pin 3) of Raspberry Pi
 
-    Follow this setup for connections with the Buzzer:
+Refer to the image below 
 
-    -   RED of Buzzer to GPIO 4 (Pin 7) of Raspberry Pi
-    -   BLACK of Buzzer to GND (Pin 9) of Raspberry Pi
+![Fritzing Diagram - Touch Sensor on RPI3](/images/Fritzing_bb.png)
 
 2.  Connect the HDMI cable from the Raspberry Pi to the Monitor. Also, connect the wired keyboard and wired mouse to the USB slots in the Raspberry Pi.
 
@@ -27,6 +28,7 @@ To get this to work, follow the steps below:
 
 7.  Open a FTP client, like Filezilla, and access the Pi using the IP. (Username and password as same, Default port as 22)
 
+## Step 8 for NodeJS developers only
 8.  Go to Putty, and follow these steps:
 
     ```
@@ -47,35 +49,52 @@ To get this to work, follow the steps below:
      `gpio-admin export 4`
     *(Ignore the error message if any.)*
 
-     `cd .. `
-
-     `mkdir iotnext`
 
 
-9.  Go back to your laptop and clone this repository.
+9.  Go back to your laptop or ssh to your RaspberryPI and clone this repository.
     
-    `git clone https://github.com/saurabhkirtani/touch-sensor-azureIoT.git`
+    `git clone https://github.com/brijrajsingh/touch-sensor-azureIoT`
 
     `cd touch-sensor-azureIoT `
-    
 
-10.  Open your Azure account by going to https://portal.azure.com - if you are attending IoT Next 2016 conference, you will be distributed a free Azure pass. (If you don't have an Azure account, you can get a free trial here: https://azure.microsoft.com/en-in/free/)
+    cd to the directory of your choice nodejs or python   
 
-11.  Setup IoT Hub in your Azure account. [Instructions here.](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-node-node-getstarted#create-an-iot-hub) - Choose Southeast Asia as the region.
+10. Get the IOTHub connection string from your mentor.
 
-12.  Install the Device Explorer utility (if on a Windows dev machine) if you don't have it already. Then, create a new device and note down the **device connection string**. [Instructions here.](https://github.com/Azure/azure-iot-sdk-csharp/tree/master/tools/DeviceExplorer). If you are on a non-Windows dev machine, use the iothub-explorer CLI tool - [instructions are here.](https://github.com/Azure/iothub-explorer)
+11.  Install the Device Explorer utility (if on a Windows dev machine) if you don't have it already. Then, create a new device and note down the **device connection string**. [Instructions here.](https://github.com/Azure/azure-iot-sdk-csharp/tree/master/tools/DeviceExplorer). If you are on a non-Windows dev machine, use the iothub-explorer CLI tool - [instructions are here.](https://github.com/Azure/iothub-explorer)
 
-13.  Paste the **device connection string** obained from the above step in connectionString variable in the file pi-gpio-to-cloud.js (which you would have obtained in your laptop after cloning the repository)
+12.  
+#### NodeJS
+Paste the **device connection string** obained from the above step in connectionString variable in the file nodejs/pi-gpio-to-cloud.js (which you would have obtained in your laptop after cloning the repository)
 
-14.  Go to Filezilla and upload the 2 files - package.json and pi-gpio-to-cloud.js to the Raspberry Pi's iotnext directory.
+#### Python
+Paste the **device connection string** obained from the above step in connectionString variable in the file python/d2cMsgSender.py (which you would have obtained in your laptop after cloning the repository)
 
-15.  Now go back to Putty, ensure you are in the iotnext directory.  Run *npm install* to install all the required dependencies automatically. This process can take about a minute or so to complete.
+##### You may upload the files to your raspberrypi using filezilla or you may clone this repo directly into your raspberry pi, or create these files in raspberrypi using nano editor
 
-16.  Run the pi-gpio-to-cloud.js file with sudo - *sudo node pi-gpio-to-cloud.js*. If successful, you will start seeing '-------' every one second, and as soon as you touch the touch sensor, a beep sound should come and the value should be sent to Azure.
+13.
+#### NodeJs 
+ SSH and Run *npm install* to install all the required dependencies automatically. This process can take about a minute or so to complete.
 
-17.  The data is now being sent to Azure. You can verify that the data is being sent to Azure by using the same Device Explorer tool above. Go to the Data tab, choose the device, and click on Monitor. Now touch the touch sensor again - the data format being sent is of the form *{"VoteCount":1,"TimeFlag":"2016-11-09T20:22:53.845Z"}*
+#### Python
+[Install Azure IoT sdk for python](https://docs.microsoft.com/en-us/azure/python-how-to-install) 
+
+14.
+#### NodeJS  
+Run the nodejs/pi-gpio-to-cloud.js file with sudo - *sudo node pi-gpio-to-cloud.js*. If successful, you will start seeing '-------' every one second, and as soon as you touch the touch sensor the value should be sent to Azure.
+
+#### Python
+Run the python/d2cMsgSender.py
+`python d2cMsgSender.py`
+
+as soon as you touch the touch sensor the value should be sent to Azure.
+
+15.  The data is now being sent to Azure. You can verify that the data is being sent to Azure by using the same Device Explorer tool above. Go to the Data tab, choose the device, and click on Monitor. Now touch the touch sensor again - the data format being sent is of the form *{"VoteCount":1,"TimeFlag":"2016-11-09T20:22:53.845Z"}*
 
 18.  We'll now analyze this data real-time in the cloud, by using a Stream Analytics job and Power BI dashboards. Follow along.
+
+
+## Workshop #2
 
 ##### Create Stream Analytics jobs
 1. Go to portal.azure.com
@@ -106,4 +125,5 @@ To get this to work, follow the steps below:
 *Congratulations! You have completed this workshop.*       
 
 ### Credits
-The code uses [this NPM module](https://github.com/rakeshpai/pi-gpio) for GPIO read and write.
+
+For NodeJs Workshop, the code uses [this NPM module](https://github.com/rakeshpai/pi-gpio) for GPIO read and write.

@@ -3,7 +3,7 @@ var Protocol = require('azure-iot-device-http').Http;
 var Client = require('azure-iot-device').Client;
 var Message = require('azure-iot-device').Message;
 
-var connectionString = '<device connection string>';
+var connectionString = 'Your device connection string goes here';
 var client = Client.fromConnectionString(connectionString, Protocol);
 
 var connectCallback = function (err) {
@@ -12,14 +12,14 @@ var connectCallback = function (err) {
   } else {
     console.log('Client connected');
 
-    gpio.setDirection(7, "output", function(err,value){
+/*    gpio.setDirection(7, "output", function(err,value){
       if(err) throw err;
       console.log('Pin 7 set to output successful');
     });
 
     gpio.write(7,0, function(err, value){
      if(err) throw err;
-    });
+    });*/
 
     setInterval(function() {
     gpio.read(3, function(err, value) {
@@ -29,9 +29,9 @@ var connectCallback = function (err) {
         {
         console.log("You have registered your vote!"); // The current state of the pin
       	
-        gpio.write(7,1, function(err, value){
+        /*gpio.write(7,1, function(err, value){
          if(err) throw err;
-        });
+        });*/
         value=0;
 
         var data = JSON.stringify({
@@ -46,9 +46,9 @@ var connectCallback = function (err) {
         else
        {
         console.log(".....");
-        gpio.write(7,0, function(err, value){
+        /*gpio.write(7,0, function(err, value){
         if(err) throw err;
-        });
+        });*/
        }
     });
     }, 1000)

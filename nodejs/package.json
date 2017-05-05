@@ -1,12 +1,12 @@
 {
   "name": "iotnext",
   "version": "0.0.1",
-  "description": "IoT Next 2016 Workshop",
+  "description": "Azure IoT Workshop",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Saurabh Kirtani",
+  "author": "Brijraj Singh",
   "license": "ISC",
   "dependencies": {
     "azure-iot-device": "^1.0.16",
